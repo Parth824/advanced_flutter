@@ -1,6 +1,7 @@
 import 'dart:math';
-
+import 'package:app_conver/view/componend/homecomponend.dart';
 import 'package:flutter/material.dart';
+import '../componend/setpper.dart';
 
 class HomaPage extends StatefulWidget {
   const HomaPage({super.key});
@@ -61,11 +62,7 @@ class _HomaPageState extends State<HomaPage>
           return Transform.rotate(
             angle: controller.animation!.value * 6.28,
             child: [
-              Container(
-                child: Text("Home"),
-                color: Colors.amber,
-                alignment: Alignment.center,
-              ),
+              home_Page(),
               Container(
                 child: Text("Calls"),
                 color: Colors.red,
@@ -80,7 +77,34 @@ class _HomaPageState extends State<HomaPage>
           );
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          await showDialog(
+            context: context,
+            builder: (context) {
+              return Dialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20),),
+                ),
+                insetPadding: EdgeInsets.zero,
+                child: Container(
+                  width: 320,
+                  child: Flexible(
+                    child: SetpperCompnt(),
+                  ),
+                ),
+              );
+            },
+          );
 
+          setState(
+            () {
+              // Navigator.of(context).pop();
+            },
+          );
+        },
+        child: Icon(Icons.add),
+      ),
     );
   }
 }
