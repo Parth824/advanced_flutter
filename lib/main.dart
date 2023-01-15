@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(
-    CuPage(),
+     CuPage(),
   );
 }
 
@@ -21,6 +21,6 @@ class CuPage extends StatefulWidget {
 class _CuPageState extends State<CuPage> {
   @override
   Widget build(BuildContext context) {
-    return home_Page();
+    return HomaPage();
   }
 }

@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:app_conver/view/componend/Golbel.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class SetpperCompnt extends StatefulWidget {
   const SetpperCompnt({super.key});
@@ -10,7 +13,23 @@ class SetpperCompnt extends StatefulWidget {
 
 class _SetpperCompntState extends State<SetpperCompnt> {
   int i = 0;
+
+  File? img;
+
+  ImagePicker imagePicker = ImagePicker();
+
   @override
+  Togalary() async {
+    var k = await imagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (k != null) {
+        img = File(k!.path);
+        Goldes.imge = img;
+      }
+    });
+  }
+
   Widget build(BuildContext context) {
     return Stepper(
       onStepTapped: (value) {
@@ -98,8 +117,16 @@ class _SetpperCompntState extends State<SetpperCompnt> {
                           onPressed: () async {
                             if (Goldes.name!.isNotEmpty) {
                               Goldes.l.addAll([
-                                {'n': Goldes.name, 'd': Goldes.dec,'i': null}
+                                {
+                                  'n': Goldes.name,
+                                  'd': Goldes.dec,
+                                  'i': (img != null) ? Goldes.imge : " ",
+                                  'c': Goldes.cont,
+                                  't': DateTime.now(),
+                                  'dy': "january ${DateTime.now().day},${DateTime.now().hour}:${DateTime.now().minute} PM"
+                                }
                               ]);
+                              print(Goldes.l[0]['i'].runtimeType);
                               Navigator.of(context).pop();
                             }
                           },
@@ -130,12 +157,18 @@ class _SetpperCompntState extends State<SetpperCompnt> {
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    Text("ADD"),
+                    (img == null) ? Text("ADD") : Container(),
                     Center(
-                      child: CircleAvatar(
-                        backgroundColor: Colors.black12,
-                        radius: 50,
-                      ),
+                      child: (img != null)
+                          ? CircleAvatar(
+                              backgroundColor: Colors.black12,
+                              radius: 50,
+                              backgroundImage: FileImage(img!),
+                            )
+                          : CircleAvatar(
+                              backgroundColor: Colors.black12,
+                              radius: 50,
+                            ),
                     ),
                     Container(
                       height: 100,
@@ -148,7 +181,11 @@ class _SetpperCompntState extends State<SetpperCompnt> {
                             height: 25,
                             // alignment: Alignment.center,
                             child: FloatingActionButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                setState(() {
+                                  Togalary();
+                                });
+                              },
                               child: Icon(Icons.add),
                             ),
                           ),
@@ -170,15 +207,31 @@ class _SetpperCompntState extends State<SetpperCompnt> {
           subtitle: Text("Enetr name"),
           content: SingleChildScrollView(
             child: Container(
-              height: 60,
-              child: TextFormField(
-                onChanged: (value) {
-                  Goldes.name = value;
-                },
-                decoration: InputDecoration(
-                  hintText: "Enter name",
-                  border: OutlineInputBorder(),
-                ),
+              child: Column(
+                children: [
+                  TextFormField(
+                    onChanged: (value) {
+                      Goldes.name = value;
+                    },
+                    decoration: InputDecoration(
+                      hintText: "Enter name",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.number,
+                    onChanged: (value) {
+                      Goldes.cont = value;
+                    },
+                    decoration: InputDecoration(
+                      hintText: "Enter Contect",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
